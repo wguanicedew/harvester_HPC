@@ -174,49 +174,50 @@ if [ -z $ATLAS_LOCAL_ROOT_BASE ]; then
     export ATLAS_LOCAL_ROOT_BASE=/cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase
 fi
 
-echo [$(date -u "+%m-%d-%y %H:%M:%S %Z")] setup_ALRB
-source ${ATLAS_LOCAL_ROOT_BASE}/user/atlasLocalSetup.sh --quiet
-echo [$(date -u "+%m-%d-%y %H:%M:%S %Z")] finished_setup_ALRB
+# echo [$(date -u "+%m-%d-%y %H:%M:%S %Z")] setup_ALRB
+# source ${ATLAS_LOCAL_ROOT_BASE}/user/atlasLocalSetup.sh --quiet
+# echo [$(date -u "+%m-%d-%y %H:%M:%S %Z")] finished_setup_ALRB
 
 
 module use /soft/modulefiles
 module load spack-pe-base
 module load apptainer
 
-  export HTTP_PROXY=http://proxy.alcf.anl.gov:3128
-  export HTTPS_PROXY=http://proxy.alcf.anl.gov:3128
-  export http_proxy=http://proxy.alcf.anl.gov:3128
-  export https_proxy=http://proxy.alcf.anl.gov:3128
+export HTTP_PROXY=http://proxy.alcf.anl.gov:3128
+export HTTPS_PROXY=http://proxy.alcf.anl.gov:3128
+export http_proxy=http://proxy.alcf.anl.gov:3128
+export https_proxy=http://proxy.alcf.anl.gov:3128
 
-  export FRONTIER_SERVER="(serverurl=http://v4fa.cern.ch/atlr)(serverurl=http://v4fb.cern.ch/atlr)(proxyurl=http://proxy.alcf.anl.gov:3128)"
+export FRONTIER_SERVER="(serverurl=http://v4fa.cern.ch/atlr)(serverurl=http://v4fb.cern.ch/atlr)(proxyurl=http://proxy.alcf.anl.gov:3128)"
 
-  IMAGE_AREA=/lus/eagle/projects/ATLAS_workflow_ALCF/usatlas/software/harvester/image
-  # export ATLAS_LOCAL_ROOT_BASE=/lus/eagle/projects/ATLAS_workflow_ALCF/usatlas/software/harvester/alrb/ATLASLocalRootBase/
-  # source "${ATLAS_LOCAL_ROOT_BASE}/user/atlasLocalSetup.sh"
-  echo "[$SECONDS] Change directory to $HARVESTER_WORKDIR"
-  cd "$HARVESTER_WORKDIR"
+IMAGE_AREA=/lus/eagle/projects/ATLAS_workflow_ALCF/usatlas/software/harvester/image
+# export ATLAS_LOCAL_ROOT_BASE=/lus/eagle/projects/ATLAS_workflow_ALCF/usatlas/software/harvester/alrb/ATLASLocalRootBase/
+# source "${ATLAS_LOCAL_ROOT_BASE}/user/atlasLocalSetup.sh"
+echo "[$SECONDS] Change directory to $HARVESTER_WORKDIR"
+cd "$HARVESTER_WORKDIR"
 
-  if [ -n "$Local_Pilot" ]; then
-    echo "[$SECONDS] Local_Pilot is set, using local pilot at $Local_Pilot"
-    pilot_py="$Local_Pilot"
-  else
-    pilot_tar_file="$ATLAS_SW_BASE/atlas.cern.ch/repo/sw/PandaPilot/tar/pilot3.tar.gz"
-    echo "[$SECONDS] Local_Pilot is not set, fetching pilot from $pilot_tar_file"
-    mkdir -p "$HARVESTER_WORKDIR/pilot"
-    tar -xzf "$pilot_tar_file" -C "$HARVESTER_WORKDIR/pilot"
-    pilot_py="$HARVESTER_WORKDIR/pilot/pilot3/pilot.py"
-  fi
+if [ -n "$Local_Pilot" ]; then
+  echo "[$SECONDS] Local_Pilot is set, using local pilot at $Local_Pilot"
+  pilot_py="$Local_Pilot"
+else
+  pilot_tar_file="$ATLAS_SW_BASE/atlas.cern.ch/repo/sw/PandaPilot/tar/pilot3.tar.gz"
+  echo "[$SECONDS] Local_Pilot is not set, fetching pilot from $pilot_tar_file"
+  mkdir -p "$HARVESTER_WORKDIR/pilot"
+  tar -xzf "$pilot_tar_file" -C "$HARVESTER_WORKDIR/pilot"
+  pilot_py="$HARVESTER_WORKDIR/pilot/pilot3/pilot.py"
+fi
 
-  if [ -z "$prodsourcelabel" ]; then
-    prodsourcelabel=managed
-  fi
+if [ -z "$prodsourcelabel" ]; then
+  prodsourcelabel=managed
+fi
 
-  echo "[$SECONDS] Done with setup, starting pilot wrapper"
-  cmd="python3 $pilot_py -q \"$PANDA_QUEUE\" -i PR -j $prodsourcelabel -w generic --url https://pandaserver.cern.ch --pilot-user ATLAS --allow-same-user=False --getjobrequests=150 --notokenrenewal --cleanup True --noworkerpilotstatusupdate -x 50 --debug --cvmfsbase $CVMFS_BASE --cleanup False"
+echo "[$SECONDS] Done with setup, starting pilot wrapper"
+# cmd="python3 $pilot_py -q \"$PANDA_QUEUE\" -i PR -j $prodsourcelabel -w generic --url https://pandaserver.cern.ch --pilot-user ATLAS --allow-same-user=False --getjobrequests=150 --notokenrenewal --cleanup True --noworkerpilotstatusupdate -x 50 --debug --cvmfsbase $CVMFS_BASE --cleanup False"
+cmd="python3 $pilot_py -q \"$PANDA_QUEUE\" -i PR -j $prodsourcelabel -w generic --url https://pandaserver.cern.ch --pilot-user ATLAS --allow-same-user=False --getjobrequests=150 --notokenrenewal --cleanup True --noworkerpilotstatusupdate -x 50 --debug  --cleanup False"
 
-  # run.sh mounts CVMFS via cvmfsexec, runs the pilot inside that mount, then
-  # stops cvmfsexec and cleans up its installation in $JOBTMP on exit.
-  cat <<EOF3 > "$HARVESTER_WORKDIR/run.sh"
+# run.sh mounts CVMFS via cvmfsexec, runs the pilot inside that mount, then
+# stops cvmfsexec and cleans up its installation in $JOBTMP on exit.
+cat <<EOF3 > "$HARVESTER_WORKDIR/run.sh"
 #!/bin/bash
 jobtmp="$JOBTMP"
 export CVMFS_REPOS="$CVMFS_REPOS"
