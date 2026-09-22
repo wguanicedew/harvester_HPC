@@ -1,0 +1,270 @@
+{
+    "SHARED_PULL_TEMPLATE": {
+        "prodSourceLabel": "managed",
+        "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":10, "rc_alrb":10},
+        "nQueueLimitWorker": 2,
+        "maxWorkers": 4,
+        "maxNewWorkersPerCycle": 10,
+        "mapType": "NoJob",
+        "truePilot": true,
+        "maxSubmissionAttempts": 3,
+        "walltimeLimit": 1209600,
+        "prefetchEvents" :false,
+        "preparator": {
+                "name": "DummyPreparator",
+                "module": "pandaharvester.harvesterpreparator.dummy_preparator"
+        },
+        "submitter": {
+                "name":"HTCondorSubmitter",
+                "module":"pandaharvester.harvestersubmitter.htcondor_submitter",
+                "condorHostConfig": "/opt/harvester/etc/panda/condor_host_config.json",
+                "useSpool": false,
+                "useCRICGridCE": true,
+                "CEtemplateDir":"/cephfs/atlpan/harvester/harvester_configurations/GRID/condor_sdf_templates/atlas-grid-ce_pull-test.sdf.d",
+                "x509UserProxy": "/cephfs/atlpan/harvester/proxy/x509up_u25606_prod",
+                "x509UserProxyAnalysis": "/cephfs/atlpan/harvester/proxy/x509up_u25606_pilot",
+                "tokenDir": "/data/atlpan/tokens/ce/prod",
+                "tokenDirAnalysis": "/data/atlpan/tokens/ce/pilot",
+                "pandaTokenFilename": "panda_token",
+                "pandaTokenDir": "/cephfs/atlpan/harvester/tokens/pandaserver",
+                "pandaTokenKeyPath": "/cephfs/atlpan/harvester/keys/panda_token_key",
+                "logDir": "/data/atlpan/condor_logs",
+                "logBaseURL": "https://[ScheddHostname]/condor_logs",
+                "nProcesses": 4
+        },
+        "workerMaker": {
+                "name": "SimpleWorkerMaker",
+                "module": "pandaharvester.harvesterworkermaker.simple_worker_maker",
+                "jobAttributesToUse": ["nCore"]
+        },
+        "messenger": {
+                "name": "SharedFileMessenger",
+                "module": "pandaharvester.harvestermessenger.shared_file_messenger",
+                "jobSpecFileFormat": "cgi",
+                "accessPoint": "/cephfs/atlpan/harvester/harvester_wdirs/${harvesterID}/${_workerID_3.2}/${_workerID_1.0}/${workerID}"
+        },
+        "stager": {
+                "name": "DummyStager",
+                "module": "pandaharvester.harvesterstager.dummy_stager"
+        },
+        "monitor": {
+                "name":"HTCondorMonitor",
+                "module":"pandaharvester.harvestermonitor.htcondor_monitor"
+        },
+        "sweeper": {
+                "name": "HTCondorSweeper",
+                "module": "pandaharvester.harvestersweeper.htcondor_sweeper"
+        }
+    },
+    "SHARED_PUSH_TEMPLATE": {
+        "prodSourceLabel": "managed",
+        "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":10, "rc_alrb":10},
+        "nQueueLimitJobRatio": 40,
+        "nQueueLimitJobMax": 3,
+        "nQueueLimitJobMin": 1,
+        "nQueueLimitWorker": 3,
+        "maxWorkers": 10,
+        "maxNewWorkersPerCycle": 10,
+        "mapType": "OneToOne",
+        "truePilot": true,
+        "maxSubmissionAttempts": 3,
+        "walltimeLimit": 1209600,
+        "prefetchEvents" :false,
+        "preparator": {
+                "name": "DummyPreparator",
+                "module": "pandaharvester.harvesterpreparator.dummy_preparator"
+        },
+        "submitter": {
+                "name":"HTCondorSubmitter",
+                "module":"pandaharvester.harvestersubmitter.htcondor_submitter",
+                "condorHostConfig": "/opt/harvester/etc/panda/condor_host_config.json",
+                "useSpool": false,
+                "useCRICGridCE": true,
+                "CEtemplateDir":"/cephfs/atlpan/harvester/harvester_configurations/GRID/condor_sdf_templates/atlas-grid-ce_push.sdf.d",
+                "x509UserProxy": "/cephfs/atlpan/harvester/proxy/x509up_u25606_prod",
+                "x509UserProxyAnalysis": "/cephfs/atlpan/harvester/proxy/x509up_u25606_pilot",
+                "tokenDir": "/data/atlpan/tokens/ce/prod",
+                "tokenDirAnalysis": "/data/atlpan/tokens/ce/pilot",
+                "pandaTokenFilename": "panda_token",
+                "pandaTokenDir": "/cephfs/atlpan/harvester/tokens/pandaserver",
+                "pandaTokenKeyPath": "/cephfs/atlpan/harvester/keys/panda_token_key",
+                "logDir": "/data/atlpan/condor_logs",
+                "logBaseURL": "https://[ScheddHostname]/condor_logs",
+                "nProcesses": 4
+        },
+        "workerMaker": {
+                "name": "SimpleWorkerMaker",
+                "module": "pandaharvester.harvesterworkermaker.simple_worker_maker",
+                "jobAttributesToUse": ["nCore"]
+        },
+        "messenger": {
+                "name": "SharedFileMessenger",
+                "module": "pandaharvester.harvestermessenger.shared_file_messenger",
+                "jobSpecFileFormat": "cgi",
+                "accessPoint": "/cephfs/atlpan/harvester/harvester_wdirs/${harvesterID}/${_workerID_3.2}/${_workerID_1.0}/${workerID}"
+        },
+        "stager": {
+                "name": "DummyStager",
+                "module": "pandaharvester.harvesterstager.dummy_stager"
+        },
+        "monitor": {
+                "name":"HTCondorMonitor",
+                "module":"pandaharvester.harvestermonitor.htcondor_monitor"
+        },
+        "sweeper": {
+                "name": "HTCondorSweeper",
+                "module": "pandaharvester.harvestersweeper.htcondor_sweeper"
+        }
+    },
+
+
+    "NERSC_Perlmutter_IRI": {
+        "queueStatus": "online",
+        "prodSourceLabel": "user",
+        "prodSourceLabelRandomWeightsPermille": {},
+        "templateQueueName": "SHARED_PULL_TEMPLATE",
+        "maxWorkers": 1,
+        "nQueueLimitWorker": 1,
+        "nQueueLimitWorkerMin":0,
+        "nQueueLimitWorkerMax": 5,
+        "walltimeLimit": 1800,
+        "submitter": {
+            "noPilotsWhenNoActiveJobs": "true",
+            "module": "pandaharvester.harvestersubmitter.iri_submitter",
+            "name": "IriSubmitter",
+            "iri_resource_id": "59e80c79-4dfd-4c53-9c07-7405685fcd37",
+            "iri_config": "/opt/harvester/etc/panda/nersc_iri_config.yaml",
+            "iri_debug": true,
+            "x509_proxy1": "/data/atlpan/proxy/x509up_u25606_prod",
+            "x509UserProxy": "/cephfs/atlpan/harvester/proxy/x509up_u25606_prod",
+            "x509UserProxyAnalysis": "/cephfs/atlpan/harvester/proxy/x509up_u25606_pilot",
+            "tokenDir": "/data/atlpan/tokens/ce/prod",
+            "tokenDirAnalysis": "/data/atlpan/tokens/ce/pilot",
+            "pandaAuthOrigin": "atlas.pilot",
+            "pandaTokenFilename": "panda_token",
+            "pandaTokenDir": "/cephfs/atlpan/harvester/tokens/pandaserver",
+            "pandaTokenKeyPath": "/cephfs/atlpan/harvester/keys/panda_token_key",
+            "nCorePerNode":256,
+	    "nNode":1,
+	    "nProcessPerNode": 4,
+            "duration": 1800,
+            "constraint": "cpu",
+            "project": "m2616",
+            "remoteQueueName": "debug",
+            "templateFile":"/opt/harvester/sites/perlmutter_iri_submit_template.sh",
+            "remote_executable":"/global/cfs/cdirs/m2616/harvester_workdir/pilot_env/perlmutter_iri_main.sh",
+            "remote_work_dir": "/global/cfs/cdirs/m2616/harvester_workdir",
+            "remote_log_dir": "/global/cfs/cdirs/m2616/www/PanDA_logs/IRI",
+            "remote_input_cache": "/global/cfs/cdirs/m2616/harvester_workdir/input_cache",
+            "remote_export_path1": "/global/cfs/cdirs/m2616/www",
+            "remote_export_path": "https://portal.nersc.gov/cfs/m2616/PanDA_logs/IRI",
+            "htaccess_password": "",
+            "logDir": "/data/atlpan/job_logs",
+            "logBaseURL": "https://aipanda176.cern.ch/job_logs",
+            "globus_https_config": "/opt/harvester/etc/panda/NERSC_https_access_token.yaml"
+        },
+        "monitor": {
+            "module": "pandaharvester.harvestermonitor.iri_monitor",
+            "name": "IriMonitor",
+            "iri_debug": true,
+            "iri_resource_id": "59e80c79-4dfd-4c53-9c07-7405685fcd37",
+            "iri_config": "/opt/harvester/etc/panda/nersc_iri_config.yaml",
+            "logDir":"/data/atlpan/job_logs",
+	    "globus_https_config":"/opt/harvester/etc/panda/NERSC_https_access_token.yaml",
+	    "remote_work_dir": "/global/cfs/cdirs/m2616/harvester_workdir",
+            "remote_log_dir": "/global/cfs/cdirs/m2616/www/PanDA_logs/IRI",
+            "download_logs":true,
+	    "download_logs_method":"globus_https"
+        },
+        "messenger": {
+            "name": "SharedFileMessenger",
+            "module": "pandaharvester.harvestermessenger.shared_file_messenger",
+            "jobSpecFileFormat": "json",
+            "accessPoint": "/var/log/panda/work_dir/${harvesterID}/${_workerID_3.2}/${_workerID_1.0}/${workerID}"
+        },
+        "sweeper": {
+            "name": "IriSweeper",
+            "module": "pandaharvester.harvestersweeper.iri_sweeper",
+            "iri_debug": true,
+            "iri_resource_id": "59e80c79-4dfd-4c53-9c07-7405685fcd37",
+            "iri_config": "/opt/harvester/etc/panda/nersc_iri_config.yaml"
+        }
+    },
+
+    "ALCF_Crux_IRI": {
+        "queueStatus": "online",
+        "prodSourceLabel": "user",
+        "prodSourceLabelRandomWeightsPermille": {},
+        "templateQueueName": "SHARED_PULL_TEMPLATE",
+        "maxWorkers": 1,
+        "nQueueLimitWorker": 1,
+        "nQueueLimitWorkerMin":0,
+        "nQueueLimitWorkerMax": 5,
+        "walltimeLimit": 1800,
+        "submitter": {
+            "noPilotsWhenNoActiveJobs": "true",
+            "module": "pandaharvester.harvestersubmitter.iri_submitter",
+            "name": "IriSubmitter",
+            "iri_resource_id": "8b9b42f7-572a-4909-8472-a0453436304c",
+            "iri_config": "/opt/harvester/etc/panda/alcf_iri_config.yaml",
+            "iri_debug": true,
+            "x509_proxy1": "/data/atlpan/proxy/x509up_u25606_prod",
+            "x509UserProxy": "/cephfs/atlpan/harvester/proxy/x509up_u25606_prod",
+            "x509UserProxyAnalysis": "/cephfs/atlpan/harvester/proxy/x509up_u25606_pilot",
+            "tokenDir": "/data/atlpan/tokens/ce/prod",
+            "tokenDirAnalysis": "/data/atlpan/tokens/ce/pilot",
+            "pandaAuthOrigin": "atlas.pilot",
+            "pandaTokenFilename": "panda_token",
+            "pandaTokenDir": "/cephfs/atlpan/harvester/tokens/pandaserver",
+            "pandaTokenKeyPath": "/cephfs/atlpan/harvester/keys/panda_token_key",
+            "nCorePerNode":256,
+            "nNode":1,
+            "nProcessPerNode": 4,
+            "duration": 1800,
+            "constraint1": "cpu",
+            "unsupported_resource_fields": "process_count,processes_per_node,cpu_cores_per_process",
+            "project": "ATLAS_workflow_ALCF",
+            "remoteQueueName": "debug",
+            "custom_attributes": {"filesystems": "home:eagle", "place": "scatter"},
+	    "templateFile":"/opt/harvester/sites/crux_iri_submit_template.sh",
+	    "remote_executable":"/lus/eagle/projects/ATLAS_workflow_ALCF/usatlas/IRI_workdir/crux_iri_main.sh",
+	    "remote_work_dir":"/lus/eagle/projects/ATLAS_workflow_ALCF/usatlas/IRI_workdir/jobs",
+	    "remote_work_dir_resource_id": "1c3ad9d4-2e91-42bc-becb-72b1fde1235c",
+            "remote_log_dir":"/lus/eagle/projects/ATLAS_workflow_ALCF/usatlas/IRI_workdir/jobs",
+	    "remote_input_cache":"/lus/eagle/projects/ATLAS_workflow_ALCF/usatlas/IRI_workdir/input_cache",
+	    "logBaseURL":"https://aipanda176.cern.ch/job_logs",
+            "globus_https_config": "/opt/harvester/etc/panda/ALCF_CRUX_https_access_token.yaml",
+            "upload_method": "globus_https",
+            "globus_upload_dir":"/ATLAS_workflow_ALCF/usatlas/IRI_workdir/jobs"
+        },
+        "monitor": {
+            "module": "pandaharvester.harvestermonitor.iri_monitor",
+            "name": "IriMonitor",
+            "iri_debug": true,
+            "remote_export_path": "https://portal.nersc.gov/cfs/m2616/",
+            "iri_resource_id": "8b9b42f7-572a-4909-8472-a0453436304c",
+            "iri_config": "/opt/harvester/etc/panda/alcf_iri_config.yaml",
+            "logDir":"/data/atlpan/job_logs",
+            "globus_https_config":"/opt/harvester/etc/panda/ALCF_CRUX_https_access_token.yaml",
+            "remote_work_dir":"/lus/eagle/projects/ATLAS_workflow_ALCF/usatlas/IRI_workdir/jobs",
+            "remote_log_dir":"/lus/eagle/projects/ATLAS_workflow_ALCF/usatlas/IRI_workdir/jobs",
+            "download_logs":true,
+            "download_logs_method":"globus_https",
+            "globus_download_dir": "/ATLAS_workflow_ALCF/usatlas/IRI_workdir/jobs"
+        },
+        "messenger": {
+            "name": "SharedFileMessenger",
+            "module": "pandaharvester.harvestermessenger.shared_file_messenger",
+            "jobSpecFileFormat": "json",
+            "accessPoint": "/var/log/panda/work_dir/${harvesterID}/${_workerID_3.2}/${_workerID_1.0}/${workerID}"
+        },
+        "sweeper": {
+            "name": "IriSweeper",
+            "module": "pandaharvester.harvestersweeper.iri_sweeper",
+            "iri_debug": true,
+            "iri_resource_id": "8b9b42f7-572a-4909-8472-a0453436304c",
+            "iri_config": "/opt/harvester/etc/panda/alcf_iri_config.yaml"
+        }
+    }
+
+}
