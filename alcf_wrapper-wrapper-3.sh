@@ -213,7 +213,7 @@ fi
 
 echo "[$SECONDS] Done with setup, starting pilot wrapper"
 # cmd="python3 $pilot_py -q \"$PANDA_QUEUE\" -i PR -j $prodsourcelabel -w generic --url https://pandaserver.cern.ch --pilot-user ATLAS --allow-same-user=False --getjobrequests=150 --notokenrenewal --cleanup True --noworkerpilotstatusupdate -x 50 --debug --cvmfsbase $CVMFS_BASE --cleanup False"
-cmd="python3 $pilot_py -q \"$PANDA_QUEUE\" -i PR -j $prodsourcelabel -w generic --url https://pandaserver.cern.ch --pilot-user ATLAS --allow-same-user=False --getjobrequests=150 --notokenrenewal --cleanup True --noworkerpilotstatusupdate -x 50 --debug  --cleanup False"
+cmd="export ATLAS_LOCAL_ROOT_BASE=/cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase; source \${ATLAS_LOCAL_ROOT_BASE}/user/atlasLocalSetup.sh --quiet; localSetupPython pilot-default; python3 $pilot_py -q \"$PANDA_QUEUE\" -i PR -j $prodsourcelabel -w generic --url https://pandaserver.cern.ch --pilot-user ATLAS --allow-same-user=False --getjobrequests=150 --notokenrenewal --cleanup True --noworkerpilotstatusupdate -x 50 --debug  --cleanup False --noproxyverification"
 
 # run.sh mounts CVMFS via cvmfsexec, runs the pilot inside that mount, then
 # stops cvmfsexec and cleans up its installation in $JOBTMP on exit.
