@@ -153,6 +153,10 @@ echo [$(date -u "+%m-%d-%y %H:%M:%S %Z")] "Container enviromental setup file (my
 cat myEnv.sh
 echo
 
+if [ -z "$prodsourcelabel" ]; then
+  prodsourcelabel=managed
+fi
+
 # create exection file
 if [ -e myPayload.sh ] ; then /bin/rm -v myPayload.sh ; fi
 cat <<EOF2 >>myPayload.sh
@@ -167,7 +171,7 @@ echo "voms-proxy-info -all" >> myPayload.sh
 echo " " >> myPayload.sh
 # echo "python3 /global/common/software/m2616/pilot/pilot3-"$latestNERSCPilotVer"/pilot3/pilot.py -q "$PANDA_QUEUE" -i PR -j managed -w generic --url https://pandaserver.cern.ch --pilot-user ATLAS --allow-same-user=False --getjobrequests=150 --notokenrenewal --cleanup True   --noworkerpilotstatusupdate -x 50 --debug" >> myPayload.sh
 # echo "python3 /global/common/software/m2616/pilot/pilot3-"$latestNERSCPilotVer"/pilot3/pilot.py -q "$PANDA_QUEUE" -i PR -j managed -w generic --url https://pandaserver.cern.ch --pilot-user ATLAS --allow-same-user=False --getjobrequests=150 --notokenrenewal --cleanup True   --noworkerpilotstatusupdate -x 50 --debug --noproxyverification " >> myPayload.sh
-echo "python3 /global/common/software/m2616/pilot/pilot3-"$latestNERSCPilotVer"/pilot3/pilot.py -q "$PANDA_QUEUE" -i PR -j user -w generic --url https://pandaserver.cern.ch --pilot-user ATLAS --allow-same-user=False --getjobrequests=150 --notokenrenewal --cleanup True   --noworkerpilotstatusupdate -x 50 --debug --noproxyverification " >> myPayload.sh
+echo "python3 /global/common/software/m2616/pilot/pilot3-"$latestNERSCPilotVer"/pilot3/pilot.py -q "$PANDA_QUEUE" -i PR -j $prodsourcelabel -w generic --url https://pandaserver.cern.ch --pilot-user ATLAS --allow-same-user=False --getjobrequests=150 --notokenrenewal --cleanup True   --noworkerpilotstatusupdate -x 50 --debug --noproxyverification " >> myPayload.sh
 
 chmod +x myPayload.sh
 

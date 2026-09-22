@@ -78,7 +78,7 @@ export ATHENA_CORE_NUMBER=$((256 / (HARVESTER_TASKS_PER_NODE)))
 
 #DPB_shifter export wrapper_wrapper_file=$HARVESTER_DIR/etc/panda/wrapper-wrapper-3-shifter.sh
 # export wrapper_wrapper_file=$HARVESTER_DIR/etc/panda/wrapper-wrapper-3.sh
-export wrapper_wrapper_file=/global/cfs/cdirs/m2616/harvester_workdir/pilot_env/wrapper-wrapper-3.sh
+export wrapper_wrapper_file=/global/cfs/cdirs/m2616/harvester_workdir/pilot_env/nersc_wrapper-wrapper-3.sh
 
 echo [$(date -u "+%m-%d-%y %H:%M:%S %Z")] "Copy $wrapper_wrapper_file into $HARVESTER_ACCESS_POINT"
 #DPB_shifter cp -v $wrapper_wrapper_file $HARVESTER_ACCESS_POINT/wrapper-wrapper-3-shifter.sh
@@ -99,6 +99,8 @@ echo "slurm proc id: $SLURM_PROCID" | sed -e "s/^/pilot_${SLURM_PROCID}: /"
 echo "slurm cpus per task: $SLURM_CPUS_PER_TASK" | sed -e "s/^/pilot_${SLURM_PROCID}: /"
 
 # env
+
+export prodsourcelabel=user
 
 /bin/bash ./wrapper-wrapper-3.sh $PANDA_QUEUE $HARVESTER_ACCESS_POINT | sed -e "s/^/pilot_${SLURM_PROCID}: /"
 
