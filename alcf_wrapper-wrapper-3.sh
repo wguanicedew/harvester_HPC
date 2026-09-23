@@ -216,6 +216,12 @@ echo "[$SECONDS] Done with setup, starting pilot wrapper"
 # cmd="export ATLAS_LOCAL_ROOT_BASE=/cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase; source \${ATLAS_LOCAL_ROOT_BASE}/user/atlasLocalSetup.sh --quiet; alias setupATLAS='source \${ATLAS_LOCAL_ROOT_BASE}/user/atlasLocalSetup.sh'; lsetup -q \"python pilot-default-SL9\"; lsetup -q rucio xrootd davix psutil; python3 $pilot_py -q \"$PANDA_QUEUE\" -i PR -j $prodsourcelabel -w generic --url https://pandaserver.cern.ch --pilot-user ATLAS --allow-same-user=False --getjobrequests=150 --notokenrenewal --cleanup True --noworkerpilotstatusupdate -x 50 --debug  --cleanup False --noproxyverification"
 cmd="source /lus/eagle/projects/ATLAS_workflow_ALCF/usatlas/IRI_workdir/venv/bin/activate; python3 $pilot_py -q \"$PANDA_QUEUE\" -i PR -j $prodsourcelabel -w generic --url https://pandaserver.cern.ch --pilot-user ATLAS --allow-same-user=False --getjobrequests=150 --notokenrenewal --cleanup True --noworkerpilotstatusupdate -x 50 --debug  --cleanup False --noproxyverification"
 
+cat <<EOF4 > "$HARVESTER_WORKDIR/run_cmd.sh"
+#!/bin/bash
+$cmd
+EOF4
+chmod +x "$HARVESTER_WORKDIR/run_cmd.sh"
+
 # run.sh mounts CVMFS via cvmfsexec, runs the pilot inside that mount, then
 # stops cvmfsexec and cleans up its installation in $JOBTMP on exit.
 cat <<EOF3 > "$HARVESTER_WORKDIR/run.sh"
@@ -236,7 +242,7 @@ stop_cvmfsexec() {
 }
 trap stop_cvmfsexec EXIT
 
-"\$jobtmp/cvmfsexec" \$CVMFS_REPOS -- $cmd
+"\$jobtmp/cvmfsexec" \$CVMFS_REPOS -- /bin/bash "$HARVESTER_WORKDIR/run_cmd.sh"
 EOF3
 
 chmod +x "$HARVESTER_WORKDIR/run.sh"
