@@ -187,8 +187,14 @@ export HTTP_PROXY=http://proxy.alcf.anl.gov:3128
 export HTTPS_PROXY=http://proxy.alcf.anl.gov:3128
 export http_proxy=http://proxy.alcf.anl.gov:3128
 export https_proxy=http://proxy.alcf.anl.gov:3128
+# proxy.alcf.anl.gov blocks CONNECT to the panda servers (403 ERR_ACCESS_DENIED),
+# so route them direct instead of through the proxy.
+# export NO_PROXY="pandaserver.cern.ch,aipanda090.cern.ch,${NO_PROXY}"
+# export no_proxy="pandaserver.cern.ch,aipanda090.cern.ch,${no_proxy}"
 
-export FRONTIER_SERVER="(serverurl=http://v4fa.cern.ch/atlr)(serverurl=http://v4fb.cern.ch/atlr)(proxyurl=http://proxy.alcf.anl.gov:3128)"
+# export FRONTIER_SERVER="(serverurl=http://v4fa.cern.ch/atlr)(serverurl=http://v4fb.cern.ch/atlr)(proxyurl=http://proxy.alcf.anl.gov:3128)"
+# export FRONTIER_SERVER="(serverurl=http://atlasfrontier-ai.cern.ch:8000/atlr)(serverurl=http://atlasfrontier1-ai.cern.ch:8000/atlr)(serverurl=http://atlasfrontier2-ai.cern.ch:8000/atlr)(proxyurl=http://fiona8.ucsc.edu:6082)(proxyurl=http://v4f.hl-lhc.net:6082)(proxyurl=http://atlasbpfrontier.cern.ch:3127)(proxyurl=http://atlasbpfrontier.fnal.gov:3127)"
+export FRONTIER_SERVER="(serverurl=http://atlasfrontier-ai.cern.ch:8000/atlr)(serverurl=http://atlasfrontier1-ai.cern.ch:8000/atlr)(serverurl=http://atlasfrontier2-ai.cern.ch:8000/atlr)(proxyurl=http://proxy.alcf.anl.gov:3128)"
 
 IMAGE_AREA=/lus/eagle/projects/ATLAS_workflow_ALCF/usatlas/software/harvester/image
 # export ATLAS_LOCAL_ROOT_BASE=/lus/eagle/projects/ATLAS_workflow_ALCF/usatlas/software/harvester/alrb/ATLASLocalRootBase/
