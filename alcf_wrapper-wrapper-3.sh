@@ -213,7 +213,7 @@ fi
 
 echo "[$SECONDS] Done with setup, starting pilot wrapper"
 # cmd="python3 $pilot_py -q \"$PANDA_QUEUE\" -i PR -j $prodsourcelabel -w generic --url https://pandaserver.cern.ch --pilot-user ATLAS --allow-same-user=False --getjobrequests=150 --notokenrenewal --cleanup True --noworkerpilotstatusupdate -x 50 --debug --cvmfsbase $CVMFS_BASE --cleanup False"
-cmd="export ATLAS_LOCAL_ROOT_BASE=/cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase; source \${ATLAS_LOCAL_ROOT_BASE}/user/atlasLocalSetup.sh --quiet; localSetupPython pilot-default; python3 $pilot_py -q \"$PANDA_QUEUE\" -i PR -j $prodsourcelabel -w generic --url https://pandaserver.cern.ch --pilot-user ATLAS --allow-same-user=False --getjobrequests=150 --notokenrenewal --cleanup True --noworkerpilotstatusupdate -x 50 --debug  --cleanup False --noproxyverification"
+cmd="export ATLAS_LOCAL_ROOT_BASE=/cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase; source \${ATLAS_LOCAL_ROOT_BASE}/user/atlasLocalSetup.sh --quiet; alias setupATLAS='source \${ATLAS_LOCAL_ROOT_BASE}/user/atlasLocalSetup.sh'; lsetup -q \"python pilot-default-SL9\"; lsetup -q rucio xrootd davix psutil logstash; python3 $pilot_py -q \"$PANDA_QUEUE\" -i PR -j $prodsourcelabel -w generic --url https://pandaserver.cern.ch --pilot-user ATLAS --allow-same-user=False --getjobrequests=150 --notokenrenewal --cleanup True --noworkerpilotstatusupdate -x 50 --debug  --cleanup False --noproxyverification"
 
 # run.sh mounts CVMFS via cvmfsexec, runs the pilot inside that mount, then
 # stops cvmfsexec and cleans up its installation in $JOBTMP on exit.
@@ -237,9 +237,14 @@ trap stop_cvmfsexec EXIT
 
 "\$jobtmp/cvmfsexec" \$CVMFS_REPOS -- $cmd
 EOF3
-  chmod +x "$HARVESTER_WORKDIR/run.sh"
 
-  echo "Running in el9 container:"
-  echo "apptainer exec -B /lus/eagle/projects/ATLAS_workflow_ALCF/usatlas -B /home  /lus/eagle/projects/ATLAS_workflow_ALCF/usatlas/software/harvester/image/atlas-grid-almalinux9.sif $HARVESTER_WORKDIR/run.sh"
-  apptainer exec -B /lus/eagle/projects/ATLAS_workflow_ALCF/usatlas -B /home /lus/eagle/projects/ATLAS_workflow_ALCF/usatlas/software/harvester/image/atlas-grid-almalinux9.sif "$HARVESTER_WORKDIR/run.sh"
+chmod +x "$HARVESTER_WORKDIR/run.sh"
+
+echo "Running in el9 container:"
+# echo "apptainer exec -B /lus/eagle/projects/ATLAS_workflow_ALCF/usatlas -B /home  /lus/eagle/projects/ATLAS_workflow_ALCF/usatlas/software/harvester/image/atlas-grid-almalinux9.sif $HARVESTER_WORKDIR/run.sh"
+# apptainer exec -B /lus/eagle/projects/ATLAS_workflow_ALCF/usatlas -B /home /lus/eagle/projects/ATLAS_workflow_ALCF/usatlas/software/harvester/image/atlas-grid-almalinux9.sif "$HARVESTER_WORKDIR/run.sh"
+
+# /lus/eagle/projects/ATLAS_workflow_ALCF/usatlas/IRI_workdir/containers/x86_64-almalinux9.img
+echo "apptainer exec -B /lus/eagle/projects/ATLAS_workflow_ALCF/usatlas -B $JOBTMP:/home  -B $JOBTMP:/srv -B $HARVESTER_ACCESS_POINT /lus/eagle/projects/ATLAS_workflow_ALCF/usatlas/IRI_workdir/containers/x86_64-almalinux9.img $HARVESTER_WORKDIR/run.sh"
+apptainer exec -B /lus/eagle/projects/ATLAS_workflow_ALCF/usatlas -B $JOBTMP:/home  -B $JOBTMP:/srv -B $HARVESTER_ACCESS_POINT /lus/eagle/projects/ATLAS_workflow_ALCF/usatlas/IRI_workdir/containers/x86_64-almalinux9.img "$HARVESTER_WORKDIR/run.sh"
 
