@@ -116,7 +116,67 @@
                 "module": "pandaharvester.harvestersweeper.htcondor_sweeper"
         }
     },
-
+    "SHARED_PUSH_MULTI_TEMPLATE": {
+        "prodSourceLabel": "managed",
+        "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":10, "rc_alrb":10},
+        "nQueueLimitJobRatio": 40,
+        "nQueueLimitJobMax": 3,
+        "nQueueLimitJobMin": 1,
+        "nQueueLimitWorker": 3,
+        "maxWorkers": 10,
+        "maxNewWorkersPerCycle": 10,
+        "mapType": "ManyToOne",
+        "truePilot": true,
+        "maxSubmissionAttempts": 3,
+        "walltimeLimit": 1209600,
+        "prefetchEvents" :false,
+        "preparator": {
+                "name": "DummyPreparator",
+                "module": "pandaharvester.harvesterpreparator.dummy_preparator"
+        },
+        "submitter": {
+                "name":"HTCondorSubmitter",
+                "module":"pandaharvester.harvestersubmitter.htcondor_submitter",
+                "condorHostConfig": "/opt/harvester/etc/panda/condor_host_config.json",
+                "useSpool": false,
+                "useCRICGridCE": true,
+                "CEtemplateDir":"/cephfs/atlpan/harvester/harvester_configurations/GRID/condor_sdf_templates/atlas-grid-ce_push.sdf.d",
+                "x509UserProxy": "/cephfs/atlpan/harvester/proxy/x509up_u25606_prod",
+                "x509UserProxyAnalysis": "/cephfs/atlpan/harvester/proxy/x509up_u25606_pilot",
+                "tokenDir": "/data/atlpan/tokens/ce/prod",
+                "tokenDirAnalysis": "/data/atlpan/tokens/ce/pilot",
+                "pandaTokenFilename": "panda_token",
+                "pandaTokenDir": "/cephfs/atlpan/harvester/tokens/pandaserver",
+                "pandaTokenKeyPath": "/cephfs/atlpan/harvester/keys/panda_token_key",
+                "logDir": "/data/atlpan/condor_logs",
+                "logBaseURL": "https://[ScheddHostname]/condor_logs",
+                "nProcesses": 4
+        },
+        "workerMaker": {
+                "name": "SimpleWorkerMaker",
+                "module": "pandaharvester.harvesterworkermaker.simple_worker_maker",
+                "jobAttributesToUse": ["nCore"],
+                "nJobsPerWorker": 1
+        },
+        "messenger": {
+                "name": "SharedFileMessenger",
+                "module": "pandaharvester.harvestermessenger.shared_file_messenger",
+                "jobSpecFileFormat": "cgi",
+                "accessPoint": "/cephfs/atlpan/harvester/harvester_wdirs/${harvesterID}/${_workerID_3.2}/${_workerID_1.0}/${workerID}"
+        },
+        "stager": {
+                "name": "DummyStager",
+                "module": "pandaharvester.harvesterstager.dummy_stager"
+        },
+        "monitor": {
+                "name":"HTCondorMonitor",
+                "module":"pandaharvester.harvestermonitor.htcondor_monitor"
+        },
+        "sweeper": {
+                "name": "HTCondorSweeper",
+                "module": "pandaharvester.harvestersweeper.htcondor_sweeper"
+        }
+    },
 
     "NERSC_Perlmutter_IRI": {
         "queueStatus": "online",
@@ -190,7 +250,7 @@
         "queueStatus": "online",
         "prodSourceLabel": "user",
         "prodSourceLabelRandomWeightsPermille": {},
-        "templateQueueName": "SHARED_PULL_TEMPLATE",
+        "templateQueueName": "SHARED_PUSH_MULTI_TEMPLATE",
         "maxWorkers": 1,
         "nQueueLimitWorker": 1,
         "nQueueLimitWorkerMin":0,
@@ -257,6 +317,30 @@
             "iri_debug": true,
             "iri_resource_id": "8b9b42f7-572a-4909-8472-a0453436304c",
             "iri_config": "/opt/harvester/etc/panda/alcf_iri_config.yaml"
+        },
+        "preparator": {
+                "name": "GlobusBulkPreparator",
+                "module": "pandaharvester.harvesterpreparator.go_bulk_preparator_v4",
+                "globusTransferAccessFile": "/opt/harvester/etc/panda/usatlas_hpc_globus_transfer_access.yaml",
+                "basePath": "/ATLAS_workflow_ALCF/usatlas/IRI_workdir/rucio",
+                "srcEndpoint": "12782fb1-a599-4f18-b0fb-2e849681e214",
+                "Globus_srcPath": "/pnfs/usatlas.bnl.gov/atlasdatadisk/rucio/",
+                "dstEndpoint": "05d2c76a-e867-4f67-aa57-76edeb0beda0"
+        },
+        "workerMaker": {
+                "name": "SimpleWorkerMaker",
+                "module": "pandaharvester.harvesterworkermaker.simple_worker_maker",
+                "jobAttributesToUse": ["nCore"],
+                "nJobsPerWorker": 4
+        },
+        "stager": {
+                "name": "GlobusBulkStager",
+                "module": "pandaharvester.harvesterstager.go_bulk_stager_v4",
+                "globusTransferAccessFile": "/opt/harvester/etc/panda/usatlas_hpc_globus_transfer_access.yaml",
+                "basePath": "/ATLAS_workflow_ALCF/usatlas/IRI_workdir/rucio",
+                "srcEndpoint": "05d2c76a-e867-4f67-aa57-76edeb0beda0",
+                "dstEndpoint": "12782fb1-a599-4f18-b0fb-2e849681e214",
+                "Globus_dstPath": "/pnfs/usatlas.bnl.gov/atlasdatadisk/rucio/"
         }
     }
 
