@@ -182,7 +182,7 @@
         "queueStatus": "online",
         "prodSourceLabel": "user",
         "prodSourceLabelRandomWeightsPermille": {},
-        "templateQueueName": "SHARED_PULL_TEMPLATE",
+        "templateQueueName": "SHARED_PUSH_MULTI_TEMPLATE",
         "maxWorkers": 1,
         "nQueueLimitWorker": 1,
         "nQueueLimitWorkerMin":0,
@@ -243,6 +243,30 @@
             "iri_debug": true,
             "iri_resource_id": "59e80c79-4dfd-4c53-9c07-7405685fcd37",
             "iri_config": "/opt/harvester/etc/panda/nersc_iri_config.yaml"
+        },
+        "preparator": {
+                "name": "GlobusBulkPreparator",
+                "module": "pandaharvester.harvesterpreparator.go_bulk_preparator_v4",
+                "globusTransferAccessFile": "/opt/harvester/etc/panda/usatlas_hpc_globus_transfer_access.yaml",
+                "basePath": "/global/cfs/cdirs/m2616/harvester_workdir/rucio",
+                "srcEndpoint": "12782fb1-a599-4f18-b0fb-2e849681e214",
+                "Globus_srcPath": "/pnfs/usatlas.bnl.gov/atlasdatadisk/rucio/",
+                "dstEndpoint": "9d6d994a-6d04-11e5-ba46-22000b92c6ec"
+        },
+        "workerMaker": {
+                "name": "SimpleWorkerMaker",
+                "module": "pandaharvester.harvesterworkermaker.simple_worker_maker",
+                "jobAttributesToUse": ["nCore"],
+                "nJobsPerWorker": 4
+        },
+        "stager": {
+                "name": "GlobusBulkStager",
+                "module": "pandaharvester.harvesterstager.go_bulk_stager_v4",
+                "globusTransferAccessFile": "/opt/harvester/etc/panda/usatlas_hpc_globus_transfer_access.yaml",
+                "basePath": "/global/cfs/cdirs/m2616/harvester_workdir/rucio",
+                "srcEndpoint": "9d6d994a-6d04-11e5-ba46-22000b92c6ec",
+                "dstEndpoint": "12782fb1-a599-4f18-b0fb-2e849681e214",
+                "Globus_dstPath": "/pnfs/usatlas.bnl.gov/atlasdatadisk/rucio/"
         }
     },
 
