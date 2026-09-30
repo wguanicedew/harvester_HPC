@@ -214,8 +214,8 @@
             "templateFile":"/data/harvester/harvester_HPC/perlmutter_iri_submit_template.sh",
             "remote_work_dir": "/global/cfs/cdirs/m2616/harvester_workdir",
             "remote_log_dir": "/global/cfs/cdirs/m2616/www/PanDA_logs/IRI",
-            "logDir": "/data/atlpan/job_logs",
-            "logBaseURL": "https://aipanda176.cern.ch/job_logs",
+            "logDir": "/data/atlpan/condor_logs",
+            "logBaseURL": "https://aipanda176.cern.ch/condor_logs",
             "globus_https_config": "/opt/harvester/etc/panda/NERSC_https_access_token.yaml"
         },
         "monitor": {
@@ -224,7 +224,7 @@
             "iri_debug": true,
             "iri_resource_id": "59e80c79-4dfd-4c53-9c07-7405685fcd37",
             "iri_config": "/opt/harvester/etc/panda/nersc_iri_config.yaml",
-            "logDir":"/data/atlpan/job_logs",
+            "logDir":"/data/atlpan/condor_logs",
 	    "globus_https_config":"/opt/harvester/etc/panda/NERSC_https_access_token.yaml",
 	    "remote_work_dir": "/global/cfs/cdirs/m2616/harvester_workdir",
             "remote_log_dir": "/global/cfs/cdirs/m2616/www/PanDA_logs/IRI",
@@ -285,7 +285,8 @@
 	    "remote_work_dir":"/lus/eagle/projects/ATLAS_workflow_ALCF/usatlas/IRI_workdir/jobs",
 	    "remote_work_dir_resource_id": "1c3ad9d4-2e91-42bc-becb-72b1fde1235c",
             "remote_log_dir":"/lus/eagle/projects/ATLAS_workflow_ALCF/usatlas/IRI_workdir/jobs",
-	    "logBaseURL":"https://aipanda176.cern.ch/job_logs",
+	    "logDir": "/data/atlpan/condor_logs",
+            "logBaseURL":"https://aipanda176.cern.ch/condor_logs",
             "globus_https_config": "/opt/harvester/etc/panda/ALCF_CRUX_https_access_token.yaml",
             "upload_method": "globus_https",
             "globus_upload_dir":"/ATLAS_workflow_ALCF/usatlas/IRI_workdir/jobs"
@@ -297,7 +298,7 @@
             "remote_export_path": "https://portal.nersc.gov/cfs/m2616/",
             "iri_resource_id": "8b9b42f7-572a-4909-8472-a0453436304c",
             "iri_config": "/opt/harvester/etc/panda/alcf_iri_config.yaml",
-            "logDir":"/data/atlpan/job_logs",
+            "logDir":"/data/atlpan/condor_logs",
             "globus_https_config":"/opt/harvester/etc/panda/ALCF_CRUX_https_access_token.yaml",
             "remote_work_dir":"/lus/eagle/projects/ATLAS_workflow_ALCF/usatlas/IRI_workdir/jobs",
             "remote_log_dir":"/lus/eagle/projects/ATLAS_workflow_ALCF/usatlas/IRI_workdir/jobs",
