@@ -183,21 +183,16 @@
         "queueStatus": "online",
         "prodSourceLabel": "user",
         "prodSourceLabelRandomWeightsPermille": {},
-        "templateQueueName": "SHARED_PUSH_MULTI_TEMPLATE",
+        "templateQueueName": "SHARED_PULL_TEMPLATE",
+        "mapType": "NoJob",
         "maxWorkers": 1,
-        "nQueueLimitJobMax": 100,
-        "nQueueLimitJobMin": 1,
-        "nQueueLimitJob": 100,
         "nQueueLimitWorker": 1,
         "nQueueLimitWorkerMin": 0,
         "nQueueLimitWorkerMax": 5,
         "walltimeLimit": 1800,
-        "allowJobMixture": true,
         "preparator": {
-            "name": "GlobusIriPreparator",
-            "module": "pandaharvester.harvesterpreparator.globusiri_preparator",
-            "globusiri_work_dir": "/opt/harvester/globusiri_work",
-            "globusiri_site": "NERSC_Perlmutter"
+            "name": "DummyPreparator",
+            "module": "pandaharvester.harvesterpreparator.dummy_preparator"
         },
         "submitter": {
             "name": "GlobusIriSubmitter",
@@ -205,8 +200,8 @@
             "noPilotsWhenNoActiveJobs": "true",
             "globusiri_work_dir": "/opt/harvester/globusiri_work",
             "globusiri_site": "NERSC_Perlmutter",
-            "globusiri_job": "perlmutter_push_job.yaml",
-            "submit_mode": "push",
+            "globusiri_job": "perlmutter_pull_job.yaml",
+            "submit_mode": "pull",
             "x509UserProxy": "/cephfs/atlpan/harvester/proxy/x509up_u25606_prod",
             "pandaAuthOrigin": "atlas.pilot",
             "pandaTokenFilename": "panda_token",
@@ -234,9 +229,7 @@
         ],
         "workerMaker": {
             "name": "SimpleWorkerMaker",
-            "module": "pandaharvester.harvesterworkermaker.simple_worker_maker",
-            "jobAttributesToUse": ["nCore"],
-            "nJobsPerWorker": 4
+            "module": "pandaharvester.harvesterworkermaker.simple_worker_maker"
         },
         "messenger": {
             "name": "SharedFileMessenger",
@@ -245,10 +238,8 @@
             "accessPoint": "/var/log/panda/work_dir/${harvesterID}/${_workerID_3.2}/${_workerID_1.0}/${workerID}"
         },
         "stager": {
-            "name": "GlobusIriStager",
-            "module": "pandaharvester.harvesterstager.globusiri_stager",
-            "globusiri_work_dir": "/opt/harvester/globusiri_work",
-            "globusiri_site": "NERSC_Perlmutter"
+            "name": "DummyStager",
+            "module": "pandaharvester.harvesterstager.dummy_stager"
         },
         "monitor": {
             "name": "GlobusIriMonitor",
